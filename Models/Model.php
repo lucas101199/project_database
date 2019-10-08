@@ -41,6 +41,16 @@ class Model{
 
     /* --------------------------------------------------- MEMBER ---------------------------------*/
 
+    public function add_member($info) {
+        try {
+            $r = $this->bd->prepare("INSERT INTO user (name, email, password) VALUES ('" . $info['name'] ."','" . $info['email'] . "','" . $info['password'] . "')");
+            $r->execute();
+        }
+        catch(PDOException $e) {
+            die("error" . $e->getcode() . $e->getMessage());
+        }
+    }
+
     public function check_user($data) {
         try {
             $r = $this->bd->prepare("SELECT * FROM dmin WHERE name= '" . $data['user'] . "' and password= '" . $data['password'] . "'");
@@ -66,7 +76,7 @@ class Model{
             //return $count;
         }
         catch(PDOException $e) {
-            die("erreur" . $e->getcode() . $e->getMessage());
+            die("error" . $e->getcode() . $e->getMessage());
         }
     }
 }
