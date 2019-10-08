@@ -1,31 +1,31 @@
 <?php
 session_start();
 
-require_once("Utils/functions.php"); //Pour avoir la fonction e()
-require_once("Models/Model.php"); //Inclusion du modèle
-require_once("Controllers/Controller.php"); //Inclusion de la classe Controller
+require_once("Utils/functions.php"); //get the function e()
+require_once("Models/Model.php"); //Inclusion of the model
+require_once("Controllers/Controller.php"); //Inclusion of the Controller classe
 
-$controllers = []; //Liste des contrôleurs
-$controller_default = "home"; //Nom du contrôleur par défaut
+$controllers = []; //controllers list
+$controller_default = "home"; //name of the default controller
 
-//On teste si le paramètre controller existe et correspond à un contrôleur de la liste $controllers
+//testing if the parameter controller exist and correspond to a controller on the list $controllers
 if(isset($_GET['controller']) and in_array($_GET['controller'], $controllers))
-    $nom_controller = $_GET['controller'];
+    $name_controller = $_GET['controller'];
 else
-    $nom_controller = $controller_default;
+    $name_controller = $controller_default;
 
-//On détermine le nom de la classe du contrôleur
-$nom_classe = 'Controller_' . $nom_controller;
+//set the name of the controller class
+$name_class = 'Controller_' . $name_controller;
 
-//On détermine le nom du fichier contenant la définition du contrôleur
-$nom_fichier = 'Controllers/' .  $nom_classe . '.php';
+//set the name of the file containing the definition of the controller
+$name_file = 'Controllers/' .  $name_class . '.php';
 
-//Si le fichier existe
-if(file_exists($nom_fichier)){
+//if the file exist
+if(file_exists($name_file)){
 
-    //On l'inclut et on instancie un objet de cette classe
-    require_once($nom_fichier);
-    $controller = new $nom_classe();
+    //include and on instantiate an object of this class
+    require_once($name_file);
+    $controller = new $name_class();
 }
 else
     exit("Error 404: not found!");
