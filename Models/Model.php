@@ -7,19 +7,19 @@ class Model{
     private static $instance = null;
 
     /**
-     * Constructeur créant l'objet PDO et l'affectant à $bd
+     * Constructor creating the PDO object and affect this to $bd
      */
     private function __construct() {
-        $dsn   = "mysql:host=localhost;dbname=onconception";
+        $dsn   = "mysql:host=localhost;dbname=project";
         $login = "root";
-        $mdp   = 'root';
+        $pass   = 'root';
         try {
-            $this->bd = new PDO($dsn,$login,$mdp);
+            $this->bd = new PDO($dsn,$login,$pass);
             $this->bd->query("SET NAMES 'utf8'");
             $this->bd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         catch(PDOException $e) {
-            die("erreur" . $e->getcode() . $e->getMessage());
+            die("error" . $e->getcode() . $e->getMessage());
         }
 
     }
@@ -31,7 +31,7 @@ class Model{
 
     }
 
-    /* --------------------------------------------------- PRINT PRODUCT ---------------------------------*/
+    /* --------------------------------------------------- PRINT TRANSACTIONS ---------------------------------*/
 
     public function get_all() {
         $r = $this->bd->prepare('SELECT * FROM content');
@@ -40,26 +40,6 @@ class Model{
     }
 
     /* --------------------------------------------------- MEMBER ---------------------------------*/
-
-    public function add_content($info1, $info) {
-        try {
-            $r = $this->bd->prepare("INSERT INTO content (name, type) VALUES ('" . $info1 ."','" . $info['type'] . "')");
-            $r->execute();
-        }
-        catch(PDOException $e) {
-            die("erreur" . $e->getcode() . $e->getMessage());
-        }
-    }
-
-    public function update_number($num) {
-        try {
-            $r = $this->bd->prepare('UPDATE numbe SET videos=' . $num['vid'] . ', vues=' . $num['vues'] . ', km=' . $num['km'] .', tera=' . $num['tera'] . ', cafe=' . $num['cafe']);
-            $r->execute();
-        }
-        catch(PDOException $e) {
-            die("erreur" . $e->getcode() . $e->getMessage());
-        }
-    }
 
     public function check_user($data) {
         try {
@@ -72,7 +52,7 @@ class Model{
             //return $count;
         }
         catch(PDOException $e) {
-            die("erreur" . $e->getcode() . $e->getMessage());
+            die("error" . $e->getcode() . $e->getMessage());
         }
     }
 
@@ -89,12 +69,4 @@ class Model{
             die("erreur" . $e->getcode() . $e->getMessage());
         }
     }
-
-    public function print_number() {
-        $r = $this->bd->prepare('SELECT * FROM numbe');
-        $r->execute();
-        return $r->fetch(PDO::FETCH_NUM);
-    }
-
 }
-?>
