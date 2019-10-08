@@ -10,7 +10,7 @@
     <p>
         To account:
         <textarea rows="1" cols="30">
-            Amount
+            Account
         </textarea>
     </p>
 	<p>
