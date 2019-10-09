@@ -20,13 +20,33 @@
                 <th scope="col">Currency</th>
             </tr>
             </thead>
+            <?php
+                $sum_account = 0;
+                $sum_balance = 0;
+            ?>
             <?php foreach ($data as $a): ?>
             <tr>
                 <td scope="col"><?= e($a['number']) ?></td>
                 <td scope="col"><?= e($a['balance']) ?></td>
                 <td scope="col"><?= e($a['name']) ?></td>
             </tr>
+            <?php
+                $sum_account++;
+                $sum_balance += e($a['balance']);
+            ?>
             <?php endforeach ?>
+            <thead>
+            <tr>
+                <th scope="col">Total num account</th>
+                <th scope="col">Total balance</th>
+                <th scope="col">Currency</th>
+            </tr>
+            </thead>
+            <tr>
+                <td scope="col"><?php echo $sum_account ?></td>
+                <td scope="col"><?php echo $sum_balance ?></td>
+                <td scope="col">euro</td>
+            </tr>
         </table>
     </div>
 </section>
