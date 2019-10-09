@@ -12,7 +12,7 @@ class Model{
     private function __construct() {
         $dsn   = "mysql:host=localhost;dbname=project";
         $login = "root";
-        $pass   = 'root';
+        $pass  = 'root';
         try {
             $this->bd = new PDO($dsn,$login,$pass);
             $this->bd->query("SET NAMES 'utf8'");
@@ -21,25 +21,18 @@ class Model{
         catch(PDOException $e) {
             die("error" . $e->getcode() . $e->getMessage());
         }
-
     }
 
     public static function get_model() {
         if(is_null(self::$instance))
             self::$instance = new Model();
         return self::$instance;
-
     }
 
     /* --------------------------------------------------- PRINT TRANSACTIONS ---------------------------------*/
 
-    public function get_all() {
-        $r = $this->bd->prepare('SELECT * FROM content');
-        $r->execute();
-        return $r->fetchall(PDO::FETCH_ASSOC);
-    }
 
-    /* --------------------------------------------------- MEMBER ---------------------------------*/
+    /* --------------------------------------------------- MEMBER ---------------------------------------------*/
 
     public function add_member($info) {
         try {
@@ -74,6 +67,19 @@ class Model{
             //$count = $r->rowCount();
             //print_r($count);
             //return $count;
+        }
+        catch(PDOException $e) {
+            die("error" . $e->getcode() . $e->getMessage());
+        }
+    }
+
+    /* --------------------------------------------------- ACCOUNT ---------------------------------------------*/
+
+    public function show_balance() {
+        try {
+            $r = $this->bd->prepare('SELECT number, balance, currency.name FROM account JOIN currency WHERE userId=' . $_SESSION['id_user']);
+            $r->execute();
+            return $r->fetchall(PDO::FETCH_ASSOC);
         }
         catch(PDOException $e) {
             die("error" . $e->getcode() . $e->getMessage());

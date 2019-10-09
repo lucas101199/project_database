@@ -1,5 +1,5 @@
 <?php
-class Controller_login extends Controller{
+class Controller_login extends Controller {
 
     public function action_default() {
         $this->action_home_page();
@@ -18,13 +18,15 @@ class Controller_login extends Controller{
     //check if the user is already register
     public function action_check_user() {
         $m = Model::get_model();
+        $balance = (new Controller_user)->action_balance();
         $data = $m->check_user($_POST);
+
         if (! empty($data)) {
 
             $_SESSION['username'] = $_POST['user'];
             $_SESSION['id_user'] = $data['id'];
             print_r($_SESSION);
-            $this->render("home");
+            $this->render("user", $balance);
         }
 
         else {
