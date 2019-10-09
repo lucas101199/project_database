@@ -15,14 +15,14 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
     <!--Custom styles-->
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 <div class="container">
     <div class="d-flex justify-content-center h-100">
         <div class="card">
             <div class="card-header">
-                <h3>Sign In</h3>
+                <h3>Sign Up</h3>
             </div>
             <div class="card-body">
                 <form action="?controller=login&action=add_member" method="post">
@@ -35,7 +35,7 @@
 
                     <div class="input-group form-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text"><i class="fas fa-mail"></i></span>
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         </div>
                         <input id="email" type="email" class="form-control" name="email" placeholder="email">
                     </div>
@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" value="Sing up" class="btn float-right login_btn">
+                        <input type="submit" value="Sign up" class="btn float-right login_btn">
                     </div>
                 </form>
             </div>

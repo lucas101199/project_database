@@ -1,5 +1,5 @@
 <?php
-class Controller_sign extends Controller{
+class Controller_login extends Controller{
 
     public function action_default() {
         $this->action_home_page();

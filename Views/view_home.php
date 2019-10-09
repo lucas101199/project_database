@@ -15,12 +15,15 @@
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
 	<!--Custom styles-->
-	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 <div class="container">
 	<div class="d-flex justify-content-center h-100">
 		<div class="card">
+            <div class="card-header">
+                <h3>Sign In</h3>
+            </div>
 			<div class="card-body">
 				<form action="?controller=login&action=check_user" method="post">
 					<div class="input-group form-group">
