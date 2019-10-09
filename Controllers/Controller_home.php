@@ -6,6 +6,6 @@ class Controller_home extends Controller{
     }
 
     public function action_home_page() {
-        $this->render("login");
+        $this->render("home");
     }
 }

@@ -21,6 +21,9 @@
 <div class="container">
     <div class="d-flex justify-content-center h-100">
         <div class="card">
+            <div class="card-header">
+                <h3>Sign In</h3>
+            </div>
             <div class="card-body">
                 <form action="?controller=login&action=add_member" method="post">
                     <div class="input-group form-group">

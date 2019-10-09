@@ -5,8 +5,14 @@ class Controller_sign extends Controller{
         $this->action_home_page();
     }
 
+    //print the form for log into the website
     public function action_login_form() {
         $this->render("home");
+    }
+
+    //print the form for create a new user
+    public function action_sign_up_form() {
+        $this->render("sign_up");
     }
 
     //check if the user is already register
@@ -41,11 +47,6 @@ class Controller_sign extends Controller{
             $m->add_member($_POST);
             $this->render("home");
         }
-    }
-
-    //print the form for create a new user
-    public function action_sign_up_form() {
-        $this->render("sign_up");
     }
 
     //destroy the session when someone log out
