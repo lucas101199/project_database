@@ -85,4 +85,15 @@ class Model{
             die("error" . $e->getcode() . $e->getMessage());
         }
     }
+
+    public function create_account($balance, $currency) {
+        try {
+            $r = $this->bd->prepare('INSERT INTO account (number, userId, balance, currency) VALUES (NULL,' . $_SESSION['id_user'] . ',' . $balance . ',' . $currency . ')');
+            print_r($r);
+            $r->execute();
+        }
+        catch (PDOException $e) {
+            die("error" . $e->getCode() . $e->getMessage());
+        }
+    }
 }

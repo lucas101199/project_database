@@ -21,4 +21,13 @@ class Controller_user extends Controller{
         print_r($data);
         $this->render("user", $data);
     }
+
+    public function action_create_account() {
+        $m = Model::get_model();
+        $balance = $_POST['balance'];
+        $currency = $_POST['currency'];
+        print_r($_POST);
+        $m->create_account($balance, $currency);
+        $this->render("redirect");
+    }
 }

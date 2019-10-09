@@ -49,6 +49,8 @@
             </tr>
         </table>
     </div>
+    <a href="?controller=user&action=account">New Account</a>
+    <a href="?controller=user&action=transaction">New Transaction</a>
 </section>
 <!-- Jquery Library files -->
 <script
