@@ -5,7 +5,7 @@ require_once("Utils/functions.php"); //get the function e()
 require_once("Models/Model.php"); //Inclusion of the model
 require_once("Controllers/Controller.php"); //Inclusion of the Controller classe
 
-$controllers = []; //controllers list
+$controllers = ["home", "login"]; //controllers list
 $controller_default = "home"; //name of the default controller
 
 //testing if the parameter controller exist and correspond to a controller on the list $controllers

@@ -43,7 +43,7 @@ class Model{
 
     public function add_member($info) {
         try {
-            $r = $this->bd->prepare("INSERT INTO user (name, email, password) VALUES ('" . $info['name'] ."','" . $info['email'] . "','" . $info['password'] . "')");
+            $r = $this->bd->prepare("INSERT INTO user (name, email, password) VALUES ('" . $info['user'] ."','" . $info['email'] . "','" . $info['password'] . "')");
             $r->execute();
         }
         catch(PDOException $e) {
@@ -53,7 +53,7 @@ class Model{
 
     public function check_user($data) {
         try {
-            $r = $this->bd->prepare("SELECT * FROM dmin WHERE name= '" . $data['user'] . "' and password= '" . $data['password'] . "'");
+            $r = $this->bd->prepare("SELECT * FROM user WHERE name= '" . $data['user'] . "' and password= '" . $data['password'] . "'");
             $r->execute();
             print_r($r);
             return $r->fetch(PDO::FETCH_ASSOC);
