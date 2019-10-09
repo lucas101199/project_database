@@ -18,7 +18,6 @@ class Controller_login extends Controller {
     //check if the user is already register
     public function action_check_user() {
         $m = Model::get_model();
-        $balance = (new Controller_user)->action_balance();
         $data = $m->check_user($_POST);
 
         if (! empty($data)) {
@@ -26,9 +25,8 @@ class Controller_login extends Controller {
             $_SESSION['username'] = $_POST['user'];
             $_SESSION['id_user'] = $data['id'];
             print_r($_SESSION);
-            $this->render("user", $balance);
+            $this->render("redirect");
         }
-
         else {
             echo'wrong username or password';
             $this->render("home");

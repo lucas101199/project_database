@@ -18,6 +18,7 @@ class Controller_user extends Controller{
     public function action_balance() {
         $m = Model::get_model();
         $data = $m->show_balance();
-        return $data;
+        print_r($data);
+        $this->render("user", $data);
     }
 }

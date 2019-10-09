@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/905237/bonsaiUI-custombuild.css" />
     <link rel="stylesheet" href="css/wallet.scss">
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 <section>
@@ -19,12 +20,12 @@
                 <th scope="col">Currency</th>
             </tr>
             </thead>
-            <?php foreach ($balance as $a): ?>
-            <td>
-                <th scope="col"><?= e($a['number']) ?></th>
-                <th scope="col"><?= e($a['balance']) ?></th>
-                <th scope="col"><?= e($a['currency']) ?></th>
-            </td>
+            <?php foreach ($data as $a): ?>
+            <tr>
+                <td scope="col"><?= e($a['number']) ?></td>
+                <td scope="col"><?= e($a['balance']) ?></td>
+                <td scope="col"><?= e($a['name']) ?></td>
+            </tr>
             <?php endforeach ?>
         </table>
     </div>
