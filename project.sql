@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Oct 08, 2019 at 01:57 PM
+-- Generation Time: Oct 10, 2019 at 03:38 AM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.8
 
@@ -21,11 +21,23 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `account` (
-  `number` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `balance` int(11) NOT NULL,
-  `currency` int(11) NOT NULL
+                           `number` int(11) NOT NULL,
+                           `userId` int(11) NOT NULL,
+                           `balance` int(11) NOT NULL,
+                           `currency` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `account`
+--
+
+INSERT INTO `account` (`number`, `userId`, `balance`, `currency`) VALUES
+(1, 2, 897, 1),
+(2, 3, 2342, 1),
+(3, 2, 2332, 1),
+(4, 2, 1234, 1),
+(5, 2, 1234, 1),
+(6, 2, 9500, 1);
 
 -- --------------------------------------------------------
 
@@ -34,10 +46,17 @@ CREATE TABLE `account` (
 --
 
 CREATE TABLE `currency` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `value` int(11) NOT NULL
+                            `id` int(11) NOT NULL,
+                            `name` varchar(255) NOT NULL,
+                            `value` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `currency`
+--
+
+INSERT INTO `currency` (`id`, `name`, `value`) VALUES
+(1, 'euro', 1);
 
 -- --------------------------------------------------------
 
@@ -46,12 +65,44 @@ CREATE TABLE `currency` (
 --
 
 CREATE TABLE `transactions` (
-  `id` int(11) NOT NULL,
-  `from_account` int(11) NOT NULL,
-  `to_account` int(11) NOT NULL,
-  `amount` int(11) NOT NULL,
-  `currency` int(11) NOT NULL
+                                `id` int(11) NOT NULL,
+                                `from_account` int(11) NOT NULL,
+                                `to_account` int(11) NOT NULL,
+                                `amount` int(11) NOT NULL,
+                                `currency` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `from_account`, `to_account`, `amount`, `currency`) VALUES
+(8, 1, 5, 13, 1),
+(9, 1, 6, 3, 1),
+(10, 1, 6, 100, 1),
+(11, 1, 6, 9000, 1);
+
+--
+-- Triggers `transactions`
+--
+DELIMITER $$
+CREATE TRIGGER `update_account` AFTER INSERT ON `transactions` FOR EACH ROW BEGIN
+    DECLARE balance_user integer;
+    DECLARE balance_user_to integer;
+
+    SET @balance_user := (SELECT balance
+                          FROM account
+                          WHERE number=NEW.from_account) - NEW.amount;
+    SET @balance_user_to := (SELECT balance
+                             FROM account
+                             WHERE number=NEW.to_account) + NEW.amount;
+
+    UPDATE account SET balance=@balance_user WHERE number=NEW.from_account;
+
+    UPDATE account SET balance=@balance_user_to WHERE number=NEW.to_account;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -60,11 +111,19 @@ CREATE TABLE `transactions` (
 --
 
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL
+                        `id` int(11) NOT NULL,
+                        `name` varchar(255) NOT NULL,
+                        `email` varchar(255) NOT NULL,
+                        `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`id`, `name`, `email`, `password`) VALUES
+(2, 'test', 'test@test.test', 'test'),
+(3, 'lucas', 'lucas@lucas.lucas', 'azert');
 
 --
 -- Indexes for dumped tables
@@ -74,31 +133,31 @@ CREATE TABLE `user` (
 -- Indexes for table `account`
 --
 ALTER TABLE `account`
-  ADD PRIMARY KEY (`number`),
-  ADD KEY `user_fk` (`userId`),
-  ADD KEY `currency_acc_fk` (`currency`);
+    ADD PRIMARY KEY (`number`),
+    ADD KEY `user_fk` (`userId`),
+    ADD KEY `currency_acc_fk` (`currency`);
 
 --
 -- Indexes for table `currency`
 --
 ALTER TABLE `currency`
-  ADD PRIMARY KEY (`id`);
+    ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `transactions`
 --
 ALTER TABLE `transactions`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `from_account_fk` (`from_account`),
-  ADD KEY `to_account_fk` (`to_account`),
-  ADD KEY `currency_fk` (`currency`);
+    ADD PRIMARY KEY (`id`),
+    ADD KEY `from_account_fk` (`from_account`),
+    ADD KEY `to_account_fk` (`to_account`),
+    ADD KEY `currency_fk` (`currency`);
 
 --
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `name` (`name`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -108,13 +167,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-  MODIFY `number` int(11) NOT NULL AUTO_INCREMENT;
+    MODIFY `number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -124,13 +189,13 @@ ALTER TABLE `user`
 -- Constraints for table `account`
 --
 ALTER TABLE `account`
-  ADD CONSTRAINT `currency_acc_fk` FOREIGN KEY (`currency`) REFERENCES `currency` (`id`),
-  ADD CONSTRAINT `user_fk` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+    ADD CONSTRAINT `currency_acc_fk` FOREIGN KEY (`currency`) REFERENCES `currency` (`id`),
+    ADD CONSTRAINT `user_fk` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
 
 --
 -- Constraints for table `transactions`
 --
 ALTER TABLE `transactions`
-  ADD CONSTRAINT `currency_fk` FOREIGN KEY (`currency`) REFERENCES `currency` (`id`),
-  ADD CONSTRAINT `from_account_fk` FOREIGN KEY (`from_account`) REFERENCES `account` (`number`),
-  ADD CONSTRAINT `to_account_fk` FOREIGN KEY (`to_account`) REFERENCES `account` (`number`);
+    ADD CONSTRAINT `currency_fk` FOREIGN KEY (`currency`) REFERENCES `currency` (`id`),
+    ADD CONSTRAINT `from_account_fk` FOREIGN KEY (`from_account`) REFERENCES `account` (`number`),
+    ADD CONSTRAINT `to_account_fk` FOREIGN KEY (`to_account`) REFERENCES `account` (`number`);
