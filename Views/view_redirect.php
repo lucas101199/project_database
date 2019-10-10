@@ -1,0 +1,1 @@
+<?php header('Location: ?controller=user&action=balance');
