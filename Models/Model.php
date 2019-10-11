@@ -86,9 +86,9 @@ class Model{
         }
     }
 
-    public function create_account($balance, $currency) {
+    public function create_account($currency) {
         try {
-            $r = $this->bd->prepare('INSERT INTO account (number, userId, balance, currency) VALUES (NULL,' . $_SESSION['id_user'] . ',' . $balance . ',' . $currency . ')');
+            $r = $this->bd->prepare('INSERT INTO account (number, userId, balance, currency) VALUES (NULL,' . $_SESSION['id_user'] . ',' . 0 . ',' . $currency . ')');
             print_r($r);
             $r->execute();
         }
