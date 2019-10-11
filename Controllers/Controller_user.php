@@ -31,10 +31,9 @@ class Controller_user extends Controller{
     //Create a new account
     public function action_create_account() {
         $m = Model::get_model();
-        $balance = $_POST['balance'];
         $currency = $_POST['currency'];
         print_r($_POST);
-        $m->create_account($balance, $currency);
+        $m->create_account($currency);
         $this->render("redirect");
     }
 

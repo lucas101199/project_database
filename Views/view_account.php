@@ -15,10 +15,6 @@
 <body>
     <form action="?controller=user&action=create_account" method="post">
         <div>
-            <p>Balance</p>
-            <input id="balance" type="number" name="balance">
-        </div>
-        <div>
             <p>Currency</p>
             <input id="currency" type="text" name="currency">
         </div>
