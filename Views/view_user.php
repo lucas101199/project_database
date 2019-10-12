@@ -1,3 +1,7 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 <html lang="en" class="no-js main">
 <head>
     <title>Account</title>
@@ -48,9 +52,16 @@
                 <td scope="col">euro</td>
             </tr>
         </table>
+        <div class="form-group">
+            <a class="btn float-right login_btn" href="?controller=login&action=destroy">Log Out</a>
+        </div>
+        <div class="form-group">
+            <a class="btn float-right login_btn" href="?controller=user&action=account">New Account</a>
+        </div>
+        <div class="form-group">
+            <a class="btn float-right login_btn" href="?controller=user&action=transaction">New Transactions</a>
+        </div>
     </div>
-    <a href="?controller=user&action=account">New Account</a>
-    <a href="?controller=user&action=transaction">New Transaction</a>
 </section>
 <!-- Jquery Library files -->
 <script
