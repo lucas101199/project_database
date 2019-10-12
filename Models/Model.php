@@ -36,7 +36,7 @@ class Model{
 
     public function add_member($info) {
         try {
-            $r = $this->bd->prepare("INSERT INTO user (name, email, password) VALUES ('" . $info['user'] ."','" . $info['email'] . "','" . $info['password'] . "')");
+            $r = $this->bd->prepare("INSERT INTO user (name, email, password, admin) VALUES ('" . $info['user'] . "','" . $info['email'] . "','" . $info['password'] . "', 0 )");
             $r->execute();
         }
         catch(PDOException $e) {
@@ -50,9 +50,6 @@ class Model{
             $r->execute();
             print_r($r);
             return $r->fetch(PDO::FETCH_ASSOC);
-            //$count = $r->rowCount();
-            //print_r($count);
-            //return $count;
         }
         catch(PDOException $e) {
             die("error" . $e->getcode() . $e->getMessage());
@@ -64,9 +61,6 @@ class Model{
             $r = $this->bd->prepare("SELECT * FROM User WHERE name= '" . $user . "'");
             $r->execute();
             return $r->fetch(PDO::FETCH_ASSOC);
-            //$count = $r->rowCount();
-            //print_r($count);
-            //return $count;
         }
         catch(PDOException $e) {
             die("error" . $e->getcode() . $e->getMessage());
@@ -132,4 +126,51 @@ class Model{
             die("error" . $e->getCode() . $e->getMessage());
         }
     }
+
+    /* --------------------------------------------------- ADMIN ----------------------------------------------*/
+
+    public function all_account() {
+        try {
+            $r = $this->bd->prepare("SELECT COUNT(*) as accounts FROM account ");
+            $r->execute();
+            return $r->fetch(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $e) {
+            die("error" . $e->getcode() . $e->getMessage());
+        }
+    }
+
+    public function all_transactions() {
+        try {
+            $r = $this->bd->prepare("SELECT COUNT(*) as transactions FROM transactions ");
+            $r->execute();
+            return $r->fetch(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $e) {
+            die("error" . $e->getcode() . $e->getMessage());
+        }
+    }
+
+    public function all_users() {
+        try {
+            $r = $this->bd->prepare("SELECT COUNT(*) as users FROM user WHERE admin=0");
+            $r->execute();
+            return $r->fetch(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $e) {
+            die("error" . $e->getcode() . $e->getMessage());
+        }
+    }
+
+    public function all_money() {
+        try {
+            $r = $this->bd->prepare("SELECT SUM(balance) as money FROM account");
+            $r->execute();
+            return $r->fetch(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $e) {
+            die("error" . $e->getcode() . $e->getMessage());
+        }
+    }
+
 }

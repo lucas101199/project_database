@@ -24,8 +24,13 @@ class Controller_login extends Controller {
 
             $_SESSION['username'] = $_POST['user'];
             $_SESSION['id_user'] = $data['id'];
-            print_r($_SESSION);
-            $this->render("redirect");
+
+            if ($data['admin'] == 0) {
+                $this->render("redirect");
+            }
+            else {
+                $this->render("redirect_admin");
+            }
         }
         else {
             echo'wrong username or password';
