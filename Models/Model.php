@@ -172,5 +172,4 @@ class Model{
             die("error" . $e->getcode() . $e->getMessage());
         }
     }
-
 }
