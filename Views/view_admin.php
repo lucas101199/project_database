@@ -19,7 +19,6 @@
                             <span class="heading">number of account</span>
 
                             <span class="value"><span><?php print_r($data['accounts']) ?></span></span>
-
                         </div>
                     </div>
                     <div class="col-lg-3 col-xs-6">
@@ -27,7 +26,6 @@
                             <span class="heading">Money all account</span>
 
                             <span class="value"><span><?php print_r($data['money']) ?></span></span>
-
                         </div>
                     </div>
                     <div class="col-lg-3 col-xs-6">
@@ -41,7 +39,6 @@
                             <span class="heading">number transactions</span>
 
                             <span class="value"><span><?php print_r($data['transactions']) ?></span></span>
-
                         </div>
                     </div>
                 </div>
