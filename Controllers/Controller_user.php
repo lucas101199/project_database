@@ -5,12 +5,15 @@ class Controller_user extends Controller{
         $this->action_home_page();
     }
 
-    //Page for creating the new account
+    //creating the new account
     public function action_account() {
-        $this->render("account");
+        $m = Model::get_model();
+        $data = $m->currency();
+        print_r($data);
+        $this->render("account", $data);
     }
 
-    //Page for making a transaction
+    // making a transaction
     public function action_transaction() {
         $m = Model::get_model();
         $data = $m->currency_user();
@@ -19,10 +22,11 @@ class Controller_user extends Controller{
         $this->render("transaction", $final);
     }
 
-    //show all the account of the actual user
+    //account of the actual user
     public function action_balance() {
         $m = Model::get_model();
         $data = $m->show_balance();
+        print_r($data);
         $this->render("user", $data);
     }
 

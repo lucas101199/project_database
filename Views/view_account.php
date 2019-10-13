@@ -10,13 +10,19 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
     <!--Custom styles-->
-    <link rel="stylesheet" href="css/main.css">
+
 </head>
 <body>
     <form action="?controller=user&action=create_account" method="post">
         <div>
-            <p>Currency</p>
-            <input id="currency" type="text" name="currency">
+            <p>
+                Currency:
+                <select name="currency">
+                    <?php foreach ($data as $z): ?>
+                        <option value="<?= e($z['id']) ?>"><?= e($z['name']) ?></option>
+                    <?php endforeach ?>
+                </select>
+            </p>
         </div>
         <div>
             <input type="submit" value="create">

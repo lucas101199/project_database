@@ -71,7 +71,7 @@ class Model{
 
     public function show_balance() {
         try {
-            $r = $this->bd->prepare('SELECT number, balance, currency.name FROM account JOIN currency WHERE userId=' . $_SESSION['id_user']);
+            $r = $this->bd->prepare('SELECT number, balance, currency.name, currency.value FROM account JOIN currency WHERE account.currency=currency.id AND userId=' . $_SESSION['id_user']) ;
             $r->execute();
             return $r->fetchall(PDO::FETCH_ASSOC);
         }
@@ -127,6 +127,18 @@ class Model{
         }
     }
 
+    public function currency() {
+        try {
+            $r = $this->bd->prepare('SELECT * FROM currency');
+            print_r($r);
+            $r->execute();
+            return $r->fetchall(PDO::FETCH_ASSOC);
+        }
+        catch (PDOException $e) {
+            die("error" . $e->getCode() . $e->getMessage());
+        }
+    }
+
     /* --------------------------------------------------- ADMIN ----------------------------------------------*/
 
     public function all_account() {
@@ -170,6 +182,20 @@ class Model{
         }
         catch(PDOException $e) {
             die("error" . $e->getcode() . $e->getMessage());
+        }
+    }
+
+    public function update_currency() {
+        $XML=simplexml_load_file("http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
+        //the file is updated at around 16:00 CET
+
+        foreach($XML->Cube->Cube->Cube as $rate){
+            //Output the value of 1EUR for a currency code
+            echo '1&euro;='.$rate["rate"].' '.$rate["currency"].'<br/>';
+            //--------------------------------------------------
+            //Here you can add your code for inserting
+            //$rate["rate"] and $rate["currency"] into your database
+            //--------------------------------------------------
         }
     }
 }
