@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Oct 10, 2019 at 03:38 AM
+-- Generation Time: Oct 13, 2019 at 10:48 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.3.8
 
@@ -23,7 +23,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `account` (
                            `number` int(11) NOT NULL,
                            `userId` int(11) NOT NULL,
-                           `balance` int(11) NOT NULL,
+                           `balance` decimal(11,4) NOT NULL,
                            `currency` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -32,12 +32,16 @@ CREATE TABLE `account` (
 --
 
 INSERT INTO `account` (`number`, `userId`, `balance`, `currency`) VALUES
-(1, 2, 897, 1),
-(2, 3, 2342, 1),
-(3, 2, 2332, 1),
-(4, 2, 1234, 1),
-(5, 2, 1234, 1),
-(6, 2, 9500, 1);
+(1, 2, '897.0000', 1),
+(2, 3, '2342.0000', 1),
+(3, 2, '2332.0000', 1),
+(4, 2, '1234.0000', 1),
+(5, 2, '1234.0000', 1),
+(6, 2, '9500.0000', 1),
+(7, 2, '0.0000', 1),
+(8, 2, '0.0000', 2),
+(9, 2, '54.0000', 3),
+(10, 2, '93.6364', 3);
 
 -- --------------------------------------------------------
 
@@ -48,7 +52,7 @@ INSERT INTO `account` (`number`, `userId`, `balance`, `currency`) VALUES
 CREATE TABLE `currency` (
                             `id` int(11) NOT NULL,
                             `name` varchar(255) NOT NULL,
-                            `value` int(11) NOT NULL
+                            `value` decimal(10,4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -56,7 +60,9 @@ CREATE TABLE `currency` (
 --
 
 INSERT INTO `currency` (`id`, `name`, `value`) VALUES
-(1, 'euro', 1);
+(1, 'EUR', '1.0000'),
+(2, 'USD', '1.1043'),
+(3, 'AUD', '1.6246');
 
 -- --------------------------------------------------------
 
@@ -80,7 +86,11 @@ INSERT INTO `transactions` (`id`, `from_account`, `to_account`, `amount`, `curre
 (8, 1, 5, 13, 1),
 (9, 1, 6, 3, 1),
 (10, 1, 6, 100, 1),
-(11, 1, 6, 9000, 1);
+(11, 1, 6, 9000, 1),
+(12, 8, 9, 50, 2),
+(13, 8, 10, 50, 2),
+(14, 9, 10, 10, 3),
+(15, 9, 10, 10, 3);
 
 --
 -- Triggers `transactions`
@@ -89,17 +99,38 @@ DELIMITER $$
 CREATE TRIGGER `update_account` AFTER INSERT ON `transactions` FOR EACH ROW BEGIN
     DECLARE balance_user integer;
     DECLARE balance_user_to integer;
+    DECLARE currency_account_from integer;
+    DECLARE currency_account_to integer;
+    DECLARE convert_amount integer;
+
+    SET @currency_account_from :=
+            (SELECT value
+             FROM account JOIN currency
+                               ON account.currency=currency.id
+             WHERE account.number=NEW.from_account);
+
+    SET @currency_account_to :=
+            (SELECT value
+             FROM account JOIN currency
+                               ON account.currency=currency.id
+             WHERE account.number=NEW.to_account);
+
+    SET @convert_amount := NEW.amount/@currency_account_from * 		@currency_account_to;
 
     SET @balance_user := (SELECT balance
                           FROM account
                           WHERE number=NEW.from_account) - NEW.amount;
+
     SET @balance_user_to := (SELECT balance
                              FROM account
-                             WHERE number=NEW.to_account) + NEW.amount;
+                             WHERE number=NEW.to_account) + 	@convert_amount;
 
-    UPDATE account SET balance=@balance_user WHERE number=NEW.from_account;
+    UPDATE account SET balance=@balance_user WHERE
+            number=NEW.from_account;
 
-    UPDATE account SET balance=@balance_user_to WHERE number=NEW.to_account;
+    UPDATE account SET balance=@balance_user_to WHERE
+            number=NEW.to_account;
+
 END
 $$
 DELIMITER ;
@@ -114,16 +145,20 @@ CREATE TABLE `user` (
                         `id` int(11) NOT NULL,
                         `name` varchar(255) NOT NULL,
                         `email` varchar(255) NOT NULL,
-                        `password` varchar(255) NOT NULL
+                        `password` varchar(255) NOT NULL,
+                        `admin` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `email`, `password`) VALUES
-(2, 'test', 'test@test.test', 'test'),
-(3, 'lucas', 'lucas@lucas.lucas', 'azert');
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `admin`) VALUES
+(2, 'test', 'test@test.test', 'test', 0),
+(3, 'lucas', 'lucas@lucas.lucas', 'azert', 0),
+(4, 'ldz', 'da@ja.da', 'zd', 0),
+(5, 'lus', 'lus@lus.lus', 'lus', 0),
+(6, 'admin', 'admin@admin.admin', 'admin', 1);
 
 --
 -- Indexes for dumped tables
@@ -167,19 +202,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `account`
 --
 ALTER TABLE `account`
-    MODIFY `number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+    MODIFY `number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables

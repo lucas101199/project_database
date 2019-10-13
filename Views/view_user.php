@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/905237/bonsaiUI-custombuild.css" />
     <link rel="stylesheet" href="css/wallet.scss">
-    <link rel="stylesheet" href="css/main.css">
+    <!--<link rel="stylesheet" href="css/main.css">-->
 </head>
 <body>
 <section>
@@ -36,7 +36,7 @@
             </tr>
             <?php
                 $sum_account++;
-                $sum_balance += e($a['balance']);
+                $sum_balance += (e($a['balance']) * e($a['value']));
             ?>
             <?php endforeach ?>
             <thead>
