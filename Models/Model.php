@@ -12,7 +12,7 @@ class Model{
     private function __construct() {
         $dsn   = "mysql:host=localhost;dbname=project";
         $login = "root";
-        $pass  = 'root';
+        $pass  = "root";
         try {
             $this->bd = new PDO($dsn,$login,$pass);
             $this->bd->query("SET NAMES 'utf8'");
