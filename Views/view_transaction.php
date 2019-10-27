@@ -7,9 +7,9 @@
 
 <form action="?controller=user&action=create_transaction" method="post">
     <div class="container" id="main-content">
-        <h2>Create transaction</h2>
+        <h2 style="color: white">Create transaction</h2>
 
-        <p> From account :
+        <p style="color: white"> From account :
             <select name="from">
                 <?php foreach ($data as $z): ?>
                     <option value="<?= e($z['number']) ?>"><?= e($z['number']) ?></option>
@@ -17,13 +17,13 @@
             </select>
         </p>
 
-        <p> To account : <input type="number" id="to_account" name="to_account" placeholder="receiver"> </p>
+        <p style="color: white"> To account : <input type="number" id="to_account" name="to_account" placeholder="receiver"> </p>
 
-        <p>
+        <p style="color: white">
             Amount: <input type="number" id="amount" name="amount" placeholder="amount">
         </p>
 
-        <p>
+        <p style="color: white">
             Currency:
             <select name="currency">
                 <?php foreach ($data as $z): ?>

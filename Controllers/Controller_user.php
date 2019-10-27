@@ -18,6 +18,7 @@ class Controller_user extends Controller{
         $data = $m->currency_user();
         $data1 = $m->account_user();
         $final = array_merge($data, $data1);
+        print_r($final);
         $this->render("transaction", $final);
     }
 

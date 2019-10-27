@@ -46,7 +46,8 @@ class Model{
 
     public function add_member($info) {
         try {
-            $r = $this->bd->prepare("INSERT INTO user (name, email, password, admin) VALUES ('" . $info['user'] . "','" . $info['email'] . "','" . $info['password'] . "', 0 )");
+            $r = $this->bd->prepare("INSERT INTO user (name, email, password, admin) 
+            VALUES ('" . $info['user'] . "','" . $info['email'] . "','" . $info['password'] . "', 0 )");
             $r->execute();
         }
         catch(PDOException $e) {
@@ -80,7 +81,8 @@ class Model{
 
     public function show_balance() {
         try {
-            $r = $this->bd->prepare('SELECT number, balance, currency.name, currency.value FROM account JOIN currency WHERE account.currency=currency.id AND userId=' . $_SESSION['id_user']) ;
+            $r = $this->bd->prepare('SELECT number, balance, currency.name, currency.value FROM account JOIN currency 
+                                                WHERE account.currency=currency.id AND userId=' . $_SESSION['id_user']) ;
             $r->execute();
             return $r->fetchall(PDO::FETCH_ASSOC);
         }
@@ -91,7 +93,8 @@ class Model{
 
     public function create_account($currency) {
         try {
-            $r = $this->bd->prepare('INSERT INTO account (number, userId, balance, currency) VALUES (NULL,' . $_SESSION['id_user'] . ',' . 0 . ',' . $currency . ')');
+            $r = $this->bd->prepare('INSERT INTO account (number, userId, balance, currency) 
+                                    VALUES (NULL,' . $_SESSION['id_user'] . ',' . 0 . ',' . $currency . ')');
             $r->execute();
         }
         catch (PDOException $e) {
@@ -101,7 +104,8 @@ class Model{
 
     public function currency_user() {
         try {
-            $r = $this->bd->prepare('SELECT DISTINCT currency.name, currency.id FROM account JOIN currency WHERE userId=' . $_SESSION['id_user']);
+            $r = $this->bd->prepare("SELECT DISTINCT currency.name, currency.id FROM account JOIN currency 
+                                                WHERE userId=" . $_SESSION['id_user'] . " AND account.currency=currency.id");
             $r->execute();
             return $r->fetchall(PDO::FETCH_ASSOC);
         }
