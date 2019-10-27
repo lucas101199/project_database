@@ -43,6 +43,9 @@
         <div class="form-group">
             <a class="btn float-right login_btn" href="?controller=user&action=transaction">New Transactions</a>
         </div>
+        <div class="form-group">
+            <a class="btn float-right login_btn" href="?controller=user&action=balance">Account</a>
+        </div>
     </div>
 </section>
 <!-- Jquery Library files -->
