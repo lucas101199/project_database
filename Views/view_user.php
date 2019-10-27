@@ -28,12 +28,15 @@
                 $sum_account = 0;
                 $sum_balance = 0;
             ?>
+            <form action="?controller=user&action=Tuser" method="post">
             <?php foreach ($data as $a): ?>
             <tr>
                 <td scope="col"><?= e($a['number']) ?></td>
                 <td scope="col"><?= e($a['balance']) ?></td>
                 <td scope="col"><?= e($a['name']) ?></td>
             </tr>
+                <input type="hidden" name="account" value="<?= e($a['number']) ?>">
+            </form>
             <?php
                 $sum_account++;
                 $sum_balance += (e($a['balance']) * e($a['value']));
@@ -48,7 +51,7 @@
             </thead>
             <tr>
                 <td scope="col"><?php echo $sum_account ?></td>
-                <td scope="col"><?php echo $sum_balance ?></td>
+      !          <td scope="col"><?php echo $sum_balance ?></td>
                 <td scope="col">euro</td>
             </tr>
         </table>

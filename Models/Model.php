@@ -31,6 +31,15 @@ class Model{
 
     /* --------------------------------------------------- PRINT TRANSACTIONS ---------------------------------*/
 
+    public function transactions_user($info) {
+        try {
+            $r = $this->bd->prepare("SELECT * FROM transactions where from_account=" . $info . "or to_account=" . $info);
+            $r->execute();
+        }
+        catch(PDOException $e) {
+            die("error" . $e->getcode() . $e->getMessage());
+        }
+    }
 
     /* --------------------------------------------------- MEMBER ---------------------------------------------*/
 

@@ -44,4 +44,10 @@ class Controller_user extends Controller{
         $m->create_transaction($_POST);
         $this->render("redirect");
     }
+
+    //each transactions per account
+    public function action_Tuser() {
+
+        $this->render("Tuser");
+    }
 }
