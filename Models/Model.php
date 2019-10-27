@@ -211,7 +211,7 @@ class Model{
                     $r->execute();
                 }
                 elseif (floor($diff/86400) > 0) {
-                    $r = $this->bd->prepare("UPDATE currency SET value=" . 1/$rate["rate"] . ", TST='" . $datetime . "' WHERE name='" . $rate["currency"] . "'");
+                    $r = $this->bd->prepare("UPDATE currency SET value=" . $rate["rate"] . ", TST='" . $datetime . "' WHERE name='" . $rate["currency"] . "'");
                     $r->execute();
                 }
             }
