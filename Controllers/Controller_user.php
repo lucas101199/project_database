@@ -25,6 +25,7 @@ class Controller_user extends Controller{
     public function action_balance() {
         $m = Model::get_model();
         $data = $m->show_balance();
+        $m->update_currency();
         $this->render("user", $data);
     }
 
