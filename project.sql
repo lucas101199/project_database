@@ -174,6 +174,33 @@ INSERT INTO `transactions` (`id`, `from_account`, `to_account`, `amount`, `curre
 -- Triggers `transactions`
 --
 DELIMITER $$
+CREATE TRIGGER `Hash` AFTER INSERT ON `transactions` FOR EACH ROW BEGIN
+
+    DECLARE id integer;
+    DECLARE from_account integer;
+    DECLARE to_account integer;
+    DECLARE currency integer;
+    DECLARE current_hash BINARY(32);
+    DECLARE prev_id integer;
+    DECLARE prev_hash BINARY(32);
+
+    SET @id := NEW.id;
+    SET @from_account := NEW.from_account;
+    SET @to_account := NEW.to_account;
+    SET @currency := NEW.currency;
+    SET @current_hash := md5(@id + @from_account + @to_account + 		@currency);
+    SELECT id INTO @prev_id FROM Transactions_block ORDER BY id DESC LIMIT 1;
+    SET @prev_hash := (SELECT CurrentHash FROM Transactions_block WHERE id=1);
+
+    INSERT INTO Transactions_block(Transactions_id, CurrentHash) VALUES(@id, @current_hash);
+
+    UPDATE Transactions_block SET Prev_id=22
+    WHERE id=23;
+
+END
+$$
+DELIMITER ;
+DELIMITER $$
 CREATE TRIGGER `update_account` AFTER INSERT ON `transactions` FOR EACH ROW BEGIN
     DECLARE balance_user integer;
     DECLARE balance_user_to integer;
@@ -212,6 +239,46 @@ CREATE TRIGGER `update_account` AFTER INSERT ON `transactions` FOR EACH ROW BEGI
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Transactions_block`
+--
+
+CREATE TABLE `Transactions_block` (
+                                      `id` int(11) NOT NULL,
+                                      `Transactions_id` int(11) NOT NULL,
+                                      `CurrentHash` binary(32) NOT NULL,
+                                      `Prev_id` int(11) DEFAULT NULL,
+                                      `Prev_hash` binary(32) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `Transactions_block`
+--
+
+INSERT INTO `Transactions_block` (`id`, `Transactions_id`, `CurrentHash`, `Prev_id`, `Prev_hash`) VALUES
+(1, 17, 0x3334313733636233386630376638396464626562633261633931323833303366, NULL, NULL),
+(2, 18, 0x3334313733636233386630376638396464626562633261633931323833303366, NULL, NULL),
+(3, 21, 0x3665613961623162616130656662396531393039343434306333313765323162, NULL, NULL),
+(4, 22, 0x3163333833636433306237633239386162353032393361646665636237623138, NULL, NULL),
+(5, 23, 0x3334313733636233386630376638396464626562633261633931323833303366, NULL, NULL),
+(6, 24, 0x6533363938353364663736366661343465316564306666363133663536336264, NULL, NULL),
+(10, 29, 0x6634353763353435613964656438386631386563656534373134356137326330, NULL, NULL),
+(16, 32, 0x3634326539326566623739343231373334383831623533653165316231386236, 10, 0x6634353763353435613964656438386631386563656534373134356137326330),
+(17, 38, 0x6136383465636565653736666335323237373332383661383935626338343336, NULL, NULL),
+(18, 39, 0x6634353763353435613964656438386631386563656534373134356137326330, NULL, 0x6634353763353435613964656438386631386563656534373134356137326330),
+(19, 40, 0x3961313135383135346466613432636164646264303639346134653962646338, NULL, NULL),
+(20, 41, 0x6438326338643136313961643831373664363635343533636662326535356630, NULL, NULL),
+(21, 42, 0x6330633763373664333062643364636165666339366634303237356264633061, NULL, NULL),
+(22, 43, 0x6136383465636565653736666335323237373332383661383935626338343336, NULL, NULL),
+(23, 44, 0x3037326230333062613132366232663462323337346633343262653965643434, 22, NULL),
+(24, 45, 0x3766333966383331376662646231393838656634633632386562613032353931, NULL, NULL),
+(25, 46, 0x3033616664626436366537393239623132356638353937383334666138336134, NULL, NULL),
+(26, 47, 0x3636663034316531366136303932386230356137653232386138396333373939, NULL, NULL),
+(27, 48, 0x3037326230333062613132366232663462323337346633343262653965643434, NULL, NULL);
+
 
 -- --------------------------------------------------------
 
@@ -272,6 +339,14 @@ ALTER TABLE `transactions`
   ADD KEY `currency_fk` (`currency`);
 
 --
+-- Indexes for table `Transactions_block`
+--
+ALTER TABLE `Transactions_block`
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `Prev_id` (`Prev_id`),
+    ADD KEY `FK_Transactions` (`Transactions_id`);
+
+--
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -307,6 +382,12 @@ ALTER TABLE `transactions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT for table `Transactions_block`
+--
+ALTER TABLE `Transactions_block`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
@@ -329,6 +410,14 @@ ALTER TABLE `transactions`
   ADD CONSTRAINT `currency_fk` FOREIGN KEY (`currency`) REFERENCES `currency` (`id`),
   ADD CONSTRAINT `from_account_fk` FOREIGN KEY (`from_account`) REFERENCES `account` (`number`),
   ADD CONSTRAINT `to_account_fk` FOREIGN KEY (`to_account`) REFERENCES `account` (`number`);
+
+--
+-- Constraints for table `Transactions_block`
+--
+ALTER TABLE `Transactions_block`
+    ADD CONSTRAINT `FK_Transaction_block_PrevID` FOREIGN KEY (`Prev_id`) REFERENCES `Transactions_block` (`id`),
+    ADD CONSTRAINT `FK_Transactions` FOREIGN KEY (`Transactions_id`) REFERENCES `transactions` (`id`);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
