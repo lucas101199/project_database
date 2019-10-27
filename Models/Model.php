@@ -190,16 +190,30 @@ class Model{
     }
 
     public function update_currency() {
+        date_default_timezone_set("Europe/Stockholm");
         $XML=simplexml_load_file("http://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
         //the file is updated at around 16:00 CET
 
         foreach($XML->Cube->Cube->Cube as $rate){
-            //Output the value of 1EUR for a currency code
-            echo '1&euro;='.$rate["rate"].' '.$rate["currency"].'<br/>';
-            //--------------------------------------------------
-            //Here you can add your code for inserting
-            //$rate["rate"] and $rate["currency"] into your database
-            //--------------------------------------------------
+            try {
+                $r = $this->bd->prepare("SELECT TST FROM currency 
+                                                    WHERE name='" . $rate["currency"] . "'");
+                $r->execute();
+                $result = $r->fetch(PDO::FETCH_ASSOC);
+                $datetime = date('Y-m-d H:i:s', time());
+                $diff = time()-strtotime($result["TST"]);
+                if (count($result)==0){
+                    $r = $this->bd->prepare("INSERT INTO currency (name, value, TST) VALUES ('" . $rate["currency"] . "'," . 1/$rate["rate"] . ",'" . $datetime . "')");
+                    $r->execute();
+                }
+                elseif (floor($diff/86400) > 0) {
+                    $r = $this->bd->prepare("UPDATE currency SET value=" . 1/$rate["rate"] . ", TST='" . $datetime . "' WHERE name='" . $rate["currency"] . "'");
+                    $r->execute();
+                }
+            }
+            catch(PDOException $e) {
+                die("error" . $e->getcode() . $e->getMessage());
+            }
         }
     }
 }
