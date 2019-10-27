@@ -31,6 +31,16 @@ class Model{
 
     /* --------------------------------------------------- PRINT TRANSACTIONS ---------------------------------*/
 
+    public function transactions_user($info) {
+        try {
+            $r = $this->bd->prepare("SELECT * FROM transactions where from_account=" . $info . " or to_account=" . $info );
+            $r->execute();
+            return $r->fetchall(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $e) {
+            die("error" . $e->getcode() . $e->getMessage());
+        }
+    }
 
     /* --------------------------------------------------- MEMBER ---------------------------------------------*/
 
@@ -48,7 +58,6 @@ class Model{
         try {
             $r = $this->bd->prepare("SELECT * FROM user WHERE name= '" . $data['user'] . "' and password= '" . $data['password'] . "'");
             $r->execute();
-            print_r($r);
             return $r->fetch(PDO::FETCH_ASSOC);
         }
         catch(PDOException $e) {
@@ -83,7 +92,6 @@ class Model{
     public function create_account($currency) {
         try {
             $r = $this->bd->prepare('INSERT INTO account (number, userId, balance, currency) VALUES (NULL,' . $_SESSION['id_user'] . ',' . 0 . ',' . $currency . ')');
-            print_r($r);
             $r->execute();
         }
         catch (PDOException $e) {
@@ -94,7 +102,6 @@ class Model{
     public function currency_user() {
         try {
             $r = $this->bd->prepare('SELECT DISTINCT currency.name, currency.id FROM account JOIN currency WHERE userId=' . $_SESSION['id_user']);
-            print_r($r);
             $r->execute();
             return $r->fetchall(PDO::FETCH_ASSOC);
         }
@@ -106,7 +113,6 @@ class Model{
     public function account_user() {
         try {
             $r = $this->bd->prepare('SELECT number FROM account WHERE userId=' . $_SESSION['id_user']);
-            print_r($r);
             $r->execute();
             return $r->fetchall(PDO::FETCH_ASSOC);
         }
@@ -119,7 +125,6 @@ class Model{
         try {
             $r = $this->bd->prepare('INSERT INTO transactions (from_account, to_account, amount, currency) VALUES 
                                    ('. $data['from'] . ',' . $data['to_account'] . ',' . $data['amount'] . ',' . $data['currency'] . ')');
-            print_r($r);
             $r->execute();
         }
         catch (PDOException $e) {
@@ -130,7 +135,6 @@ class Model{
     public function currency() {
         try {
             $r = $this->bd->prepare('SELECT * FROM currency');
-            print_r($r);
             $r->execute();
             return $r->fetchall(PDO::FETCH_ASSOC);
         }

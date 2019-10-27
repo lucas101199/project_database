@@ -28,12 +28,30 @@
                 $sum_account = 0;
                 $sum_balance = 0;
             ?>
+
             <?php foreach ($data as $a): ?>
             <tr>
-                <td scope="col"><?= e($a['number']) ?></td>
-                <td scope="col"><?= e($a['balance']) ?></td>
-                <td scope="col"><?= e($a['name']) ?></td>
+                <form action="?controller=user&action=Tuser" method="post">
+                <td scope="col">
+                    <form action="?controller=user&action=Tuser" method="post">
+                        <input type="hidden" name="account" value="<?= e($a['number']) ?>">
+                        <input type="submit" value="<?= e($a['number']) ?>">
+                    </form>
+                </td>
+                <td scope="col">
+                    <form action="?controller=user&action=Tuser" method="post">
+                        <input type="hidden" name="account" value="<?= e($a['number']) ?>">
+                        <input type="submit" value="<?= e($a['balance']) ?>">
+                    </form>
+                </td>
+                <td scope="col">
+                    <form action="?controller=user&action=Tuser" method="post">
+                        <input type="hidden" name="account" value="<?= e($a['number']) ?>">
+                        <input type="submit" value="<?= e($a['name']) ?>">
+                    </form>
+                </td>
             </tr>
+
             <?php
                 $sum_account++;
                 $sum_balance += (e($a['balance']) * e($a['value']));

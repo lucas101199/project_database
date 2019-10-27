@@ -9,7 +9,6 @@ class Controller_user extends Controller{
     public function action_account() {
         $m = Model::get_model();
         $data = $m->currency();
-        print_r($data);
         $this->render("account", $data);
     }
 
@@ -27,7 +26,6 @@ class Controller_user extends Controller{
         $m = Model::get_model();
         $data = $m->show_balance();
         $m->update_currency();
-        //print_r($data);
         $this->render("user", $data);
     }
 
@@ -44,5 +42,13 @@ class Controller_user extends Controller{
         $m = Model::get_model();
         $m->create_transaction($_POST);
         $this->render("redirect");
+    }
+
+    //each transactions per account
+    public function action_Tuser() {
+        $m = Model::get_model();
+        $data = $_POST['account'];
+        $data1 = $m->transactions_user($data);
+        $this->render("Tuser", $data1);
     }
 }
